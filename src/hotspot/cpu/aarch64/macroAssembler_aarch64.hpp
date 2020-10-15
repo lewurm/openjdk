@@ -999,10 +999,10 @@ public:
   void should_not_reach_here()                   { stop("should not reach here"); }
 
   // Stack overflow checking
-  void bang_stack_with_offset(int offset) {
+  void bang_stack_with_offset(size_t offset) {
     // stack grows down, caller passes positive offset
-    assert(offset > 0, "must bang with negative offset");
-    sub(rscratch2, sp, offset);
+    int soffset = (int)offset;
+    sub(rscratch2, sp, soffset);
     str(zr, Address(rscratch2));
   }
 

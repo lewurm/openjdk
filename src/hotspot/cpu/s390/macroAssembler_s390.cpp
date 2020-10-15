@@ -2687,13 +2687,13 @@ void MacroAssembler::safepoint_poll(Label& slow_path, Register temp_reg) {
 }
 
 // Don't rely on register locking, always use Z_R1 as scratch register instead.
-void MacroAssembler::bang_stack_with_offset(int offset) {
+void MacroAssembler::bang_stack_with_offset(size_t offset) {
   // Stack grows down, caller passes positive offset.
-  assert(offset > 0, "must bang with positive offset");
-  if (Displacement::is_validDisp(-offset)) {
-    z_tmy(-offset, Z_SP, mask_stackbang);
+  int soffset = (int)offset;
+  if (Displacement::is_validDisp(-soffset)) {
+    z_tmy(-soffset, Z_SP, mask_stackbang);
   } else {
-    add2reg(Z_R1, -offset, Z_SP);    // Do not destroy Z_SP!!!
+    add2reg(Z_R1, -soffset, Z_SP);    // Do not destroy Z_SP!!!
     z_tm(0, Z_R1, mask_stackbang);  // Just banging.
   }
 }

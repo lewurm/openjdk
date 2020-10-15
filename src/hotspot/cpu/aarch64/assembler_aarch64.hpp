@@ -3194,7 +3194,7 @@ public:
   }
 
   // Stack overflow checking
-  virtual void bang_stack_with_offset(int offset);
+  virtual void bang_stack_with_offset(size_t offset);
 
   static bool operand_valid_for_logical_immediate(bool is32, uint64_t imm);
   static bool operand_valid_for_add_sub_immediate(int64_t imm);

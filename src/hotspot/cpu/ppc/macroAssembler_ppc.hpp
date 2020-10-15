@@ -403,7 +403,7 @@ class MacroAssembler: public Assembler {
   // range (0 <= offset <= page_size).
 
   // Stack overflow checking
-  void bang_stack_with_offset(int offset);
+  void bang_stack_with_offset(size_t offset);
 
   // If instruction is a stack bang of the form ld, stdu, or
   // stdux, return the banged address. Otherwise, return 0.

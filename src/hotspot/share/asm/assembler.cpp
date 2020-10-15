@@ -135,16 +135,16 @@ void AbstractAssembler::generate_stack_overflow_check(int frame_size_in_bytes) {
     // is greater than a page.
 
     const int page_size = os::vm_page_size();
-    int bang_end = (int)StackOverflow::stack_shadow_zone_size();
+    size_t bang_end = StackOverflow::stack_shadow_zone_size();
 
     // This is how far the previous frame's stack banging extended.
-    const int bang_end_safe = bang_end;
+    const size_t bang_end_safe = bang_end;
 
     if (frame_size_in_bytes > page_size) {
       bang_end += frame_size_in_bytes;
     }
 
-    int bang_offset = bang_end_safe;
+    size_t bang_offset = bang_end_safe;
     while (bang_offset <= bang_end) {
       // Need at least one stack bang at end of shadow zone.
       bang_stack_with_offset(bang_offset);

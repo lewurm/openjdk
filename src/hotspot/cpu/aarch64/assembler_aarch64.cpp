@@ -1487,7 +1487,7 @@ int AbstractAssembler::code_fill_byte() {
 }
 
 // n.b. this is implemented in subclass MacroAssembler
-void Assembler::bang_stack_with_offset(int offset) { Unimplemented(); }
+void Assembler::bang_stack_with_offset(size_t offset) { Unimplemented(); }
 
 
 // and now the routines called by the assembler which encapsulate the

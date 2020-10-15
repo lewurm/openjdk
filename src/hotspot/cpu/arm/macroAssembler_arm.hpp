@@ -363,7 +363,7 @@ public:
   void arm_stack_overflow_check(int frame_size_in_bytes, Register tmp);
   void arm_stack_overflow_check(Register Rsize, Register tmp);
 
-  void bang_stack_with_offset(int offset) {
+  void bang_stack_with_offset(size_t offset) {
     ShouldNotReachHere();
   }
 

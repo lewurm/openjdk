@@ -1303,16 +1303,13 @@ bool MacroAssembler::is_load_from_polling_page(int instruction, void* ucontext,
 #endif
 }
 
-void MacroAssembler::bang_stack_with_offset(int offset) {
+void MacroAssembler::bang_stack_with_offset(size_t offset) {
   // When increasing the stack, the old stack pointer will be written
   // to the new top of stack according to the PPC64 abi.
   // Therefore, stack banging is not necessary when increasing
   // the stack by <= os::vm_page_size() bytes.
   // When increasing the stack by a larger amount, this method is
   // called repeatedly to bang the intermediate pages.
-
-  // Stack grows down, caller passes positive offset.
-  assert(offset > 0, "must bang with positive offset");
 
   long stdoffset = -offset;
 

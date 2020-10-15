@@ -51,7 +51,7 @@ class MacroAssembler : public Assembler {
 
  public:
   void align(int modulus);
-  void bang_stack_with_offset(int offset);
+  void bang_stack_with_offset(size_t offset);
   bool needs_explicit_null_check(intptr_t offset);
   bool uses_implicit_null_check(void* address);
   RegisterOrConstant delayed_value_impl(intptr_t* delayed_value_addr,

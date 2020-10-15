@@ -58,7 +58,7 @@ void MacroAssembler::align(int modulus) {
     emit_int8(AbstractAssembler::code_fill_byte());
 }
 
-void MacroAssembler::bang_stack_with_offset(int offset) {
+void MacroAssembler::bang_stack_with_offset(size_t offset) {
   ShouldNotCallThis();
 }
 

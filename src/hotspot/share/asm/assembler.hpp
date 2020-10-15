@@ -450,7 +450,7 @@ class AbstractAssembler : public ResourceObj  {
   // Bang stack to trigger StackOverflowError at a safe location
   // implementation delegates to machine-specific bang_stack_with_offset
   void generate_stack_overflow_check( int frame_size_in_bytes );
-  virtual void bang_stack_with_offset(int offset) = 0;
+  virtual void bang_stack_with_offset(size_t offset) = 0;
 
 
   /**

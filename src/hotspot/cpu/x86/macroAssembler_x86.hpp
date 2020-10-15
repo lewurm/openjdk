@@ -630,10 +630,10 @@ class MacroAssembler: public Assembler {
   void print_CPU_state();
 
   // Stack overflow checking
-  void bang_stack_with_offset(int offset) {
+  void bang_stack_with_offset(size_t offset) {
     // stack grows down, caller passes positive offset
-    assert(offset > 0, "must bang with negative offset");
-    movl(Address(rsp, (-offset)), rax);
+    int soffset = (int)offset;
+    movl(Address(rsp, -soffset), rax);
   }
 
   // Writes to stack successive pages until offset reached to check for
