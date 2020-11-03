@@ -70,27 +70,24 @@ AC_DEFUN_ONCE([BASIC_SETUP_PATHS],
   fi
 
   if test "x$OPENJDK_TARGET_OS" = "xwindows"; then
-    PATH_SEP=";"
-    EXE_SUFFIX=".exe"
-    BASIC_CHECK_PATHS_WINDOWS
-  else
-    PATH_SEP=":"
-    EXE_SUFFIX=""
+    BASIC_SETUP_PATHS_WINDOWS
   fi
   AC_SUBST(PATH_SEP)
   AC_SUBST(EXE_SUFFIX)
 
   # We get the top-level directory from the supporting wrappers.
+  BASIC_WINDOWS_VERIFY_DIR($TOPDIR, source)
+  UTIL_FIXUP_PATH(TOPDIR)
   AC_MSG_CHECKING([for top-level directory])
   AC_MSG_RESULT([$TOPDIR])
   AC_SUBST(TOPDIR)
-  AC_SUBST(CONFIGURE_START_DIR)
 
   # We can only call UTIL_FIXUP_PATH after BASIC_CHECK_PATHS_WINDOWS.
-  UTIL_FIXUP_PATH(TOPDIR)
   UTIL_FIXUP_PATH(CONFIGURE_START_DIR)
+  AC_SUBST(CONFIGURE_START_DIR)
 
   if test "x$CUSTOM_ROOT" != x; then
+    BASIC_WINDOWS_VERIFY_DIR($CUSTOM_ROOT, custom root)
     UTIL_FIXUP_PATH(CUSTOM_ROOT)
     WORKSPACE_ROOT="${CUSTOM_ROOT}"
   else
