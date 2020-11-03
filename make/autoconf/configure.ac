@@ -219,9 +219,6 @@ JDKOPT_SETUP_ADDRESS_SANITIZER
 #
 ###############################################################################
 
-# After we have toolchain, we can compile fixpath. It's needed by the lib checks.
-BASIC_COMPILE_FIXPATH
-
 LIB_DETERMINE_DEPENDENCIES
 LIB_SETUP_LIBRARIES
 
@@ -294,6 +291,7 @@ BASIC_CHECK_LEFTOVER_OVERRIDDEN
 CONFIG_STATUS="$CONFIGURESUPPORT_OUTPUTDIR/config.status"
 
 # Create the actual output files. Now the main work of configure is done.
+BASIC_WINDOWS_FINALIZE
 AC_OUTPUT
 
 # After AC_OUTPUT, we need to do final work

@@ -175,7 +175,7 @@ AC_DEFUN([BPERF_SETUP_CCACHE],
   if test "x$TOOLCHAIN_PATH" != x; then
     PATH=$TOOLCHAIN_PATH:$PATH
   fi
-  UTIL_PATH_PROGS(CCACHE, ccache)
+  UTIL_LOOKUP_PROGS(CCACHE, ccache)
   PATH="$OLD_PATH"
 
   AC_MSG_CHECKING([if ccache is available])
@@ -397,5 +397,7 @@ AC_DEFUN_ONCE([BPERF_SETUP_JAVAC_SERVER],
       RESULT: ENABLE_JAVAC_SERVER,
       DESC: [enable javac server],
       CHECKING_MSG: [whether to use javac server])
+  # FIXME: hack - always override this
+  ENABLE_JAVAC_SERVER=false
   AC_SUBST(ENABLE_JAVAC_SERVER)
 ])

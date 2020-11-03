@@ -388,9 +388,9 @@ AC_DEFUN_ONCE([JDKOPT_SETUP_CODE_COVERAGE],
     UTIL_FIXUP_PATH(JCOV_HOME)
     if test "x$with_jcov_input_jdk" != "x" ; then
       JCOV_INPUT_JDK="$with_jcov_input_jdk"
-      if test ! -f "$JCOV_INPUT_JDK/bin/java$EXE_SUFFIX"; then
+      if test ! -f "$JCOV_INPUT_JDK/bin/java" && test ! -f "$JCOV_INPUT_JDK/bin/java.exe"; then
         AC_MSG_RESULT([fail])
-        AC_MSG_ERROR([Invalid JDK bundle: "$JCOV_INPUT_JDK/bin/java$EXE_SUFFIX" does not exist])
+        AC_MSG_ERROR([Invalid JDK bundle: "$JCOV_INPUT_JDK/bin/java" does not exist])
       fi
       UTIL_FIXUP_PATH(JCOV_INPUT_JDK)
     fi
@@ -614,6 +614,8 @@ AC_DEFUN([JDKOPT_ALLOW_ABSOLUTE_PATHS_IN_OUTPUT],
     ALLOW_ABSOLUTE_PATHS_IN_OUTPUT="true"
   fi
 
+  # FIXME: hack - always override this
+  ALLOW_ABSOLUTE_PATHS_IN_OUTPUT=true
   AC_SUBST(ALLOW_ABSOLUTE_PATHS_IN_OUTPUT)
 ])
 
