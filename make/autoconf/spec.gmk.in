@@ -492,7 +492,7 @@ ADLC_LANGSTD_CXXFLAGS=@ADLC_LANGSTD_CXXFLAGS@
 ADLC_LDFLAGS=@ADLC_LDFLAGS@
 
 # Tools that potentially need to be cross compilation aware.
-CC:=@FIXPATH@ @CCACHE@ @ICECC@ @CC@
+CC:=@CCACHE@ @ICECC@ @CC@
 
 # CFLAGS used to compile the jdk native libraries (C-code)
 CFLAGS_JDKLIB:=@CFLAGS_JDKLIB@
