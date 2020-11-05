@@ -34,8 +34,14 @@ if echo $* | grep linux-musl >/dev/null ; then
     exit
 fi
 
-# Allow wsl
+# Allow wsl on x86_64
 if echo $* | grep x86_64-pc-wsl >/dev/null ; then
+    echo $*
+    exit
+fi
+
+# Allow wsl on aarch64
+if echo $* | grep aarch64-pc-wsl >/dev/null ; then
     echo $*
     exit
 fi
