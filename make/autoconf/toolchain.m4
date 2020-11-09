@@ -761,6 +761,32 @@ AC_DEFUN_ONCE([TOOLCHAIN_DETECT_TOOLCHAIN_EXTRA],
   esac
 ])
 
+# Setup the sysroot flags and add them to global CFLAGS and LDFLAGS so
+# that configure can use them while detecting compilers.
+# TOOLCHAIN_TYPE is available here.
+# Param 1 - Optional prefix to all variables. (e.g BUILD_)
+AC_DEFUN([TOOLCHAIN_SETUP_VISUAL_STUDIO_SYSROOT_FLAGS],
+[
+  # Convert VS_INCLUDE into SYSROOT_CFLAGS
+  OLDIFS="$IFS"
+  IFS=":"
+
+  for ipath in $VS_INCLUDE; do
+	$1SYSROOT_CFLAGS="[$]$1$SYSROOT_CFLAGS -I$ipath"
+  done
+
+  # Convert VS_LIB into SYSROOT_LDFLAGS
+  for libpath in $VS_LIB; do
+	$1SYSROOT_LDFLAGS="[$]$1SYSROOT_LDFLAGS -libpath:$libpath"
+  done
+
+  IFS="$OLDIFS"
+
+  AC_SUBST($1SYSROOT_CFLAGS)
+  AC_SUBST($1SYSROOT_LDFLAGS)
+])
+
+
 # Setup the build tools (i.e, the compiler and linker used to build programs
 # that should be run on the build platform, not the target platform, as a build
 # helper). Since the non-cross-compile case uses the normal, target compilers
