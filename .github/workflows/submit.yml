@@ -1312,7 +1312,11 @@ jobs:
       - name: Find root of build JDK image dir
         run: |
           build_jdk_root=`find ${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f`
-          echo "build_jdk_root=`dirname ${build_jdk_root}`" >> $GITHUB_ENV
+          echo "debug> result: $build_jdk_root"
+          echo "debug> dirname: `dirname ${build_jdk_root}`"
+          echo "debug> pwd: `pwd`"
+          echo "debug> HOME: $HOME"
+          echo "build_jdk_root=/cygdrive/`dirname ${build_jdk_root}`" >> $GITHUB_ENV
         shell: bash
 
       - name: Checkout gtest sources
