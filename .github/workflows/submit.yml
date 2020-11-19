@@ -1366,8 +1366,8 @@ jobs:
           --with-msvc-toolset-version=14.28
           --openjdk-target=aarch64-unknown-cygwin
           --disable-warnings-as-errors
-          --with-devkit=build/devkit/VS2019-16.7.5-devkit
-          --with-build-devkit=build/devkit/VS2019-16.7.5-devkit
+          --with-devkit=build/devkit/VS2019-16.8.1-devkit
+          --with-build-devkit=build/devkit/VS2019-16.8.1-devkit
           ${{ matrix.flags }}
           --with-version-opt="$env:GITHUB_ACTOR-$env:GITHUB_SHA"
           --with-version-build=0
