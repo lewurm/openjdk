@@ -1324,7 +1324,7 @@ jobs:
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          & bash -c 'build_jdk_root=`find ${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f`; echo "build_jdk_root=/cygdrive`dirname ${build_jdk_root}`" >> $GITHUB_ENV'
+          & bash -c 'build_jdk_root_cygwin=`find ${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f`; echo "build_jdk_root_cygwin=/cygdrive`dirname ${build_jdk_root}`" >> $GITHUB_ENV'
           & echo "debug> result: $build_jdk_root"
           & echo "debug> dirname: `dirname ${build_jdk_root}`"
           & echo "debug> pwd: `pwd`"
