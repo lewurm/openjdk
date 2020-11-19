@@ -1350,6 +1350,13 @@ jobs:
           & bash make/devkit/createWindowsDevkit2019.sh
         working-directory: jdk
 
+      - name: Find root of devkit dir
+        run: |
+          devkit_root=`find . -name devkit.info -type f`
+          echo "devkit_root=`dirname ${devkit_root}`" >> $GITHUB_ENV
+        shell: bash
+        working-directory: jdk
+
       - name: Apply fixpath.exe Patch
         run: |
           curl 'https://gist.githubusercontent.com/lewurm/c099a4b5fcd8a182510cbdeebcb41f77/raw/d5badd6ee78911f79d5c3b695c61debfa54d8ced/0001-fixpath-workaround-for-win-aarch64.patch' > p.patch
@@ -1366,8 +1373,8 @@ jobs:
           --with-msvc-toolset-version=14.28
           --openjdk-target=aarch64-unknown-cygwin
           --disable-warnings-as-errors
-          --with-devkit=build/devkit/VS2019-16.8.1-devkit
-          --with-build-devkit=build/devkit/VS2019-16.8.1-devkit
+          --with-devkit=${{ env.devkit_root }}
+          --with-build-devkit=${{ env.devkit_root }}
           ${{ matrix.flags }}
           --with-version-opt="$env:GITHUB_ACTOR-$env:GITHUB_SHA"
           --with-version-build=0
