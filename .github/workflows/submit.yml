@@ -1237,7 +1237,9 @@ jobs:
   windows_aarch64_build:
     name: Windows aarch64
     runs-on: "windows-2019"
-    needs: prerequisites
+    needs:
+      - prerequisites
+      - windows_x64_build
     if: needs.prerequisites.outputs.should_run != 'false' && needs.prerequisites.outputs.platform_windows_aarch64 != 'false'
 
     strategy:
@@ -1257,10 +1259,6 @@ jobs:
       BOOT_JDK_FILENAME: "${{ fromJson(needs.prerequisites.outputs.dependencies).WINDOWS_X64_BOOT_JDK_FILENAME }}"
       BOOT_JDK_URL: "${{ fromJson(needs.prerequisites.outputs.dependencies).WINDOWS_X64_BOOT_JDK_URL }}"
       BOOT_JDK_SHA256: "${{ fromJson(needs.prerequisites.outputs.dependencies).WINDOWS_X64_BOOT_JDK_SHA256 }}"
-      BUILD_JDK_VERSION: "${{ fromJson(needs.prerequisites.outputs.dependencies).BUILD_JDK_VERSION }}"
-      BUILD_JDK_FILENAME: "${{ fromJson(needs.prerequisites.outputs.dependencies).WINDOWS_X64_BUILD_JDK_FILENAME }}"
-      BUILD_JDK_URL: "${{ fromJson(needs.prerequisites.outputs.dependencies).WINDOWS_X64_BUILD_JDK_URL }}"
-      BUILD_JDK_SHA256: "${{ fromJson(needs.prerequisites.outputs.dependencies).WINDOWS_X64_BUILD_JDK_SHA256 }}"
 
     steps:
       - name: Restore cygwin packages from cache
@@ -1298,22 +1296,23 @@ jobs:
           Get-ChildItem "$HOME\bootjdk\$env:BOOT_JDK_VERSION\*\*" | Move-Item -Destination "$HOME\bootjdk\$env:BOOT_JDK_VERSION"
         if: steps.bootjdk.outputs.cache-hit != 'true'
 
-      - name: Restore build JDK from cache
-        id: buildjdk
-        uses: actions/cache@v2
+      - name: Restore build JDK
+        id: build_restore
+        uses: actions/download-artifact@v2
         with:
-          path: ~/buildjdk/${{ env.BUILD_JDK_VERSION }}
-          key: buildjdk-${{ runner.os }}-${{ env.BUILD_JDK_VERSION }}-${{ env.BUILD_JDK_SHA256 }}-v1
+          name: transient_jdk-windows-x64_${{ needs.prerequisites.outputs.bundle_id }}
+          path: ~/jdk-windows-x64
+        continue-on-error: true
 
-      - name: Download build JDK
+      - name: Unpack jdk
         run: |
-          mkdir -p "$HOME\buildjdk\$env:BUILD_JDK_VERSION"
-          & curl -L "$env:BUILD_JDK_URL" -o "$HOME/buildjdk/$env:BUILD_JDK_FILENAME"
-          $FileHash = Get-FileHash -Algorithm SHA256 "$HOME/buildjdk/$env:BUILD_JDK_FILENAME"
-          $FileHash.Hash -eq $env:BUILD_JDK_SHA256
-          & tar -xf "$HOME/buildjdk/$env:BUILD_JDK_FILENAME" -C "$HOME/buildjdk/$env:BUILD_JDK_VERSION"
-          Get-ChildItem "$HOME\buildjdk\$env:BUILD_JDK_VERSION\*\*" | Move-Item -Destination "$HOME\buildjdk\$env:BUILD_JDK_VERSION"
-        if: steps.buildjdk.outputs.cache-hit != 'true'
+          mkdir -p "${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin"
+          tar -xf "${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin.zip" -C "${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin"
+
+      - name: Find root of build JDK image dir
+        run: |
+          build_jdk_root=`find ${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f`
+          echo "build_jdk_root=`dirname ${build_jdk_root}`" >> $GITHUB_ENV
 
       - name: Checkout gtest sources
         uses: actions/checkout@v2
@@ -1372,7 +1371,7 @@ jobs:
           --with-version-opt="$env:GITHUB_ACTOR-$env:GITHUB_SHA"
           --with-version-build=0
           --with-boot-jdk="$HOME/bootjdk/$env:BOOT_JDK_VERSION"
-          --with-build-jdk="$HOME/buildjdk/$env:BUILD_JDK_VERSION"
+          --with-build-jdk=${{ env.build_jdk_root }}
           --with-jtreg="$HOME/jtreg"
           --with-gtest="$env:GITHUB_WORKSPACE/gtest"
           --with-default-make-target="product-bundles test-bundles"
