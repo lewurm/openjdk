@@ -24,6 +24,7 @@ jobs:
       platform_linux_s390x: ${{ steps.check_platforms.outputs.platform_linux_s390x }}
       platform_linux_x86: ${{ steps.check_platforms.outputs.platform_linux_x86 }}
       platform_linux_x64: ${{ steps.check_platforms.outputs.platform_linux_x64 }}
+      platform_windows_aarch64: ${{ steps.check_platforms.outputs.platform_windows_aarch64 }}
       platform_windows_x64: ${{ steps.check_platforms.outputs.platform_windows_x64 }}
       platform_macos_x64: ${{ steps.check_platforms.outputs.platform_macos_x64 }}
       dependencies: ${{ steps.check_deps.outputs.dependencies }}
@@ -1232,9 +1233,9 @@ jobs:
 
   windows_aarch64_build:
     name: Windows aarch64
-    runs-on: "windows-latest"
+    runs-on: "windows-2019"
     needs: prerequisites
-    if: needs.prerequisites.outputs.should_run != 'false' && needs.prerequisites.outputs.platform_windows_x64 != 'false'
+    if: needs.prerequisites.outputs.should_run != 'false' && needs.prerequisites.outputs.platform_windows_aarch64 != 'false'
 
     strategy:
       fail-fast: false
@@ -1312,6 +1313,12 @@ jobs:
           path: ~/jtreg/
         if: steps.jtreg_restore.outcome == 'failure'
 
+      - name: Ensure a specific version of MSVC is installed
+        run: >
+          Start-Process -FilePath 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe' -Wait -NoNewWindow -ArgumentList
+          'modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise" --quiet
+          --add Microsoft.VisualStudio.Component.VC.14.28.arm64'
+
       - name: Create Devkit
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
@@ -1319,7 +1326,7 @@ jobs:
           & bash make/devkit/createWindowsDevkit2019.sh
         working-directory: jdk
 
-      - name: Apply fixpath Patch
+      - name: Apply fixpath.exe Patch
         run: |
           curl 'https://gist.githubusercontent.com/lewurm/c099a4b5fcd8a182510cbdeebcb41f77/raw/d5badd6ee78911f79d5c3b695c61debfa54d8ced/0001-fixpath-workaround-for-win-aarch64.patch' > p.patch
           git apply p.patch
@@ -1332,6 +1339,7 @@ jobs:
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
           & bash configure
           --with-conf-name=windows-aarch64
+          --with-msvc-toolset-version=14.28
           --openjdk-target=aarch64-unknown-cygwin
           --disable-warnings-as-errors
           --with-devkit=build/devkit/VS2019-16.7.5-devkit
