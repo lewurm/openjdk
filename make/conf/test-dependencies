@@ -26,6 +26,7 @@
 # Versions and download locations for dependencies used by pre-submit testing.
 
 BOOT_JDK_VERSION=15
+BUILD_JDK_VERSION=16
 JTREG_VERSION=5.1
 JTREG_BUILD=b01
 GTEST_VERSION=1.8.1
@@ -37,6 +38,10 @@ LINUX_X64_BOOT_JDK_SHA256=bb67cadee687d7b486583d03c9850342afea4593be4f436044d785
 WINDOWS_X64_BOOT_JDK_FILENAME=openjdk-15_windows-x64_bin.zip
 WINDOWS_X64_BOOT_JDK_URL=https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_windows-x64_bin.zip
 WINDOWS_X64_BOOT_JDK_SHA256=764e39a71252a9791118a31ae56a4247c049463bda5eb72497122ec50b1d07f8
+
+WINDOWS_X64_BUILD_JDK_FILENAME=openjdk-16-ea_windows-x64_bin.zip
+WINDOWS_X64_BUILD_JDK_URL=https://download.java.net/java/early_access/jdk16/24/GPL/openjdk-16-ea+24_windows-x64_bin.zip
+WINDOWS_X64_BUILD_JDK_SHA256=2ef93d1fd68c389f44f1ce2442ace05cd1614bf170f03d14493611bf39789dad
 
 MACOS_X64_BOOT_JDK_FILENAME=openjdk-115_osx-x64_bin.tar.gz
 MACOS_X64_BOOT_JDK_URL=https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_osx-x64_bin.tar.gz
