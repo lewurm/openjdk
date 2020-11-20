@@ -1534,7 +1534,7 @@ jobs:
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          & bash -c 'echo $HOMEPATH'
+          & bash -c 'echo `echo $(cygpath $HOMEPATH)`'
         continue-on-error: true
 
       - name: Ensure a specific version of MSVC is installed
