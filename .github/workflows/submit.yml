@@ -1355,11 +1355,25 @@ jobs:
           & bash -c 'echo `cygpath $HOMEPATH`'
         continue-on-error: true
 
+      - name: REMOVEME debug5
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & bash -c 'echo `echo $(cygpath $HOMEPATH)`'
+        continue-on-error: true
+
+      - name: REMOVEME debug6
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & echo `echo $(cygpath $HOMEPATH)`
+        continue-on-error: true
+
       - name: Find root of build JDK image dir with cygwin
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          & echo build_jdk_root=`find $(cygpath $HOMEPATH)/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f | xargs dirname` >> $GITHUB_ENV
+          & bash -c 'echo build_jdk_root=`find $(cygpath $HOMEPATH)/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f | xargs dirname`' >> $GITHUB_ENV
 
       - name: Checkout gtest sources
         uses: actions/checkout@v2
@@ -1530,11 +1544,18 @@ jobs:
           path: ~/jtreg/
         if: steps.jtreg_restore.outcome == 'failure'
 
-      - name: debug2
+      - name: REMOVEME debug2
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
           & bash -c 'echo `echo $(cygpath $HOMEPATH)`'
+        continue-on-error: true
+
+      - name: REMOVEME debug6
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & echo `echo $(cygpath $HOMEPATH)`
         continue-on-error: true
 
       - name: Ensure a specific version of MSVC is installed
