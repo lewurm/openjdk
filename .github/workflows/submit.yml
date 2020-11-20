@@ -1398,7 +1398,6 @@ jobs:
           --with-conf-name=windows-aarch64
           --with-msvc-toolset-version=14.28
           --openjdk-target=aarch64-unknown-cygwin
-          --disable-warnings-as-errors
           --with-devkit=${{ env.devkit_root }}
           --with-build-devkit=${{ env.devkit_root }}
           ${{ matrix.flags }}
