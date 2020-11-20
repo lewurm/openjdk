@@ -1341,6 +1341,13 @@ jobs:
           & bash -c 'echo $GITHUB_ENV'
         continue-on-error: true
 
+      - name: debug2
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & bash -c 'echo $HOME'
+        continue-on-error: true
+
       - name: Checkout gtest sources
         uses: actions/checkout@v2
         with:
@@ -1509,6 +1516,13 @@ jobs:
           name: transient_jtreg_${{ needs.prerequisites.outputs.bundle_id }}
           path: ~/jtreg/
         if: steps.jtreg_restore.outcome == 'failure'
+
+      - name: debug2
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & bash -c 'echo $HOME'
+        continue-on-error: true
 
       - name: Ensure a specific version of MSVC is installed
         run: >
