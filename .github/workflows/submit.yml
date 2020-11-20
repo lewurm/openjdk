@@ -1309,7 +1309,7 @@ jobs:
           mkdir -p "${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin"
           tar -xf "${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin.zip" -C "${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin"
 
-      - name: Find root of build JDK image dir
+      - name: REMOVEME Find root of build JDK image dir
         run: |
           build_jdk_root_gitbash=`find ${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f`
           echo "debug> result: $build_jdk_root_gitbash"
@@ -1320,40 +1320,39 @@ jobs:
           echo "build_jdk_root_gitbash=/cygdrive`dirname ${build_jdk_root_gitbash}`" >> $GITHUB_ENV
         shell: bash
 
-      - name: Find root of build JDK image dir with cygwin
+      - name: REMOVEME Find root of build JDK image dir with cygwin
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
           & bash -c 'echo build_jdk_root_cygwin=`find ${HOMEPATH}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f | xargs dirname` >> $GITHUB_ENV'
         continue-on-error: true
 
-      - name: Find root of build JDK image dir with cygwin
-        run: |
-          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
-          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          & echo build_jdk_root=`find ${HOMEPATH}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f | xargs dirname` >> $GITHUB_ENV
-        continue-on-error: true
-
-      - name: debug1
+      - name: REMOVEME debug1
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
           & bash -c 'echo $GITHUB_ENV'
         continue-on-error: true
 
-      - name: debug2
+      - name: REMOVEME debug2
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
           & bash -c 'echo $HOME'
         continue-on-error: true
 
-      - name: debug3
+      - name: REMOVEME debug3
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
           & bash -c 'echo $HOMEPATH'
         continue-on-error: true
+
+      - name: Find root of build JDK image dir with cygwin
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & echo build_jdk_root=`find $(cygpath ${HOMEPATH})/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f | xargs dirname` >> $GITHUB_ENV
 
       - name: Checkout gtest sources
         uses: actions/checkout@v2
