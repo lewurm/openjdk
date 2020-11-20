@@ -1331,6 +1331,29 @@ jobs:
           & echo "debug> HOME: $HOME"
         continue-on-error: true
 
+      - name: debug1
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & bash -c 'echo $GITHUB_ENV'
+        continue-on-error: true
+
+      - name: debug2
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          $env:GITHUB_ENV = "$GITHUB_ENV";
+          & bash -c 'echo $GITHUB_ENV'
+        continue-on-error: true
+
+      - name: debug3
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          $env:GITHUB_ENV = "$GITHUB_ENV";
+          & bash -c 'echo ${{ env.GITHUB_ENV }}'
+        continue-on-error: true
+
       - name: Checkout gtest sources
         uses: actions/checkout@v2
         with:
