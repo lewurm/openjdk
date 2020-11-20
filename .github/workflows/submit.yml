@@ -1348,6 +1348,13 @@ jobs:
           & bash -c 'echo $HOMEPATH'
         continue-on-error: true
 
+      - name: REMOVEME debug4
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & bash -c 'echo `cygpath $HOMEPATH`'
+        continue-on-error: true
+
       - name: Find root of build JDK image dir with cygwin
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
