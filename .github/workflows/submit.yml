@@ -1324,11 +1324,14 @@ jobs:
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          & bash -c 'build_jdk_root_cygwin=`find ${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f`; echo "build_jdk_root_cygwin=`dirname ${build_jdk_root_cygwin}`" >> $GITHUB_ENV'
-          & echo "debug> result: $build_jdk_root"
-          & echo "debug> dirname: `dirname ${build_jdk_root}`"
-          & echo "debug> pwd: `pwd`"
-          & echo "debug> HOME: $HOME"
+          & bash -c 'echo build_jdk_root_cygwin=`find ${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f | xargs dirname` >> $GITHUB_ENV'
+        continue-on-error: true
+
+      - name: Find root of build JDK image dir with cygwin2
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
+          & echo build_jdk_root_cygwin2=`find ${HOME}/jdk-windows-x64/jdk-${{ env.JDK_VERSION }}-internal+0_windows-x64_bin -name release -type f | xargs dirname` >> $GITHUB_ENV
         continue-on-error: true
 
       - name: debug1
@@ -1336,22 +1339,6 @@ jobs:
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
           & bash -c 'echo $GITHUB_ENV'
-        continue-on-error: true
-
-      - name: debug2
-        run: |
-          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
-          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          $env:GITHUB_ENV = "$GITHUB_ENV";
-          & bash -c 'echo $GITHUB_ENV'
-        continue-on-error: true
-
-      - name: debug3
-        run: |
-          $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
-          $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          $env:GITHUB_ENV = "$GITHUB_ENV";
-          & bash -c 'echo ${{ env.GITHUB_ENV }}'
         continue-on-error: true
 
       - name: Checkout gtest sources
